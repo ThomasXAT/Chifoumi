@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/chifoumi">
+        <file>images (1)/images/ciseau.gif</file>
+        <file>images (1)/images/ciseau_115.png</file>
+        <file>images (1)/images/papier.gif</file>
+        <file>images (1)/images/papier_115.png</file>
+        <file>images (1)/images/pierre.gif</file>
+        <file>images (1)/images/pierre_115.png</file>
+        <file>images (1)/images/rien.gif</file>
+        <file>images (1)/images/rien_115.png</file>
+        <file>images (1)/images/versus.gif</file>
+        <file>images (1)/images/versus_70.png</file>
+    </qresource>
+</RCC>

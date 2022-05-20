@@ -1,159 +1,113 @@
-/***************************************************************
- * Name:      chifoumi.cpp
- * Author:    P.Dagorret ()
- * Created:   2021-05-10
- * Description : classe metier (= module) Chifoumi-v1
- **************************************************************/
 #include "chifoumi.h"
+#include "chifoumiJeu.h"
+#include "ui_chifoumi.h"
+#include "QShortcut"
 
-#include <cstdlib>
-#include <ctime>
 
 
-    ///* ---- PARTIE MODULE ---------------------------
+ChifoumiJeu monJeu;
+QString scoreMachine;
+QString scoreJoueur;
 
-Chifoumi::Chifoumi()
+
+chifoumi::chifoumi(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::chifoumi)
 {
-    (*this).coupJoueur = rien;
-    (*this).coupMachine = rien;
-    (*this).scoreJoueur = 0;
-    (*this).scoreMachine = 0;
+    ui->setupUi(this);
+    QObject::connect(ui->boutonPartie, SIGNAL(clicked()), this, SLOT(nouvellePartie()));
+    QObject::connect(ui->pierre, SIGNAL(clicked()), this, SLOT(coupPierre()));
+    QObject::connect(ui->feuille, SIGNAL(clicked()), this, SLOT(coupFeuille()));
+    QObject::connect(ui->ciseau, SIGNAL(clicked()), this, SLOT(coupCiseau()));
+    QObject::connect(ui->actionA_Propos_de_l_application, SIGNAL(triggered()), this, SLOT(infosApp()));
+    new QShortcut(QKeySequence(Qt::ALT + Qt::Key_F + Qt::Key_F3), this, SLOT(close()));
+    new QShortcut(QKeySequence(Qt::Key_F +Qt::Key_F1), this, SLOT(infosApp()));
+    monJeu.initCoups();
+    monJeu.initScores();
+    scoreJoueur.setNum(monJeu.getScoreJoueur());
+    scoreMachine.setNum(monJeu.getScoreMachine());
+    ui->scoreJoueur->setText(scoreJoueur);
+    ui->scoreMachine->setText(scoreMachine);
+    ui->scoreMachine->setFont(QFont("Times", 15, QFont::Bold));
+    ui->scoreJoueur->setFont(QFont("Times", 15, QFont::Bold));
+    ui->scoreMachine->setAlignment(Qt::AlignCenter);
+    ui->scoreJoueur->setAlignment(Qt::AlignCenter);
+
+
 }
 
-Chifoumi::~Chifoumi()
+chifoumi::~chifoumi()
 {
-    delete [] (this);
+    delete ui;
 }
 
-        /// Getters
 
-Chifoumi::UnCoup Chifoumi::getCoupJoueur() {
-	return (*this).coupJoueur;
+void chifoumi::nouvellePartie(){
+    ui->pierre->setEnabled(true);
+    ui->feuille->setEnabled(true);
+    ui->ciseau->setEnabled(true);
+
+
+}
+void chifoumi::coupPierre(){
+    ui->coupJoueur->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/pierre.gif")));
+    monJeu.setCoupJoueur(monJeu.pierre);
+    coupMachine();
 }
 
-Chifoumi::UnCoup Chifoumi::getCoupMachine() {
-    return (*this).coupMachine;
+void chifoumi::coupCiseau(){
+    ui->coupJoueur->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/ciseau.gif")));
+    monJeu.setCoupJoueur(monJeu.ciseau);
+    coupMachine();
+
+
+}
+void chifoumi::coupFeuille(){
+    ui->coupJoueur->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/papier.gif")));
+    monJeu.setCoupJoueur(monJeu.papier);
+    coupMachine();
 }
 
-unsigned int Chifoumi::getScoreJoueur() {
-    return (*this).scoreJoueur;
-}
+void chifoumi::coupMachine(){
 
-unsigned int Chifoumi::getScoreMachine() {
-    return (*this).scoreMachine;
-}
-
-char Chifoumi::determinerGagnant()
-{
-    char gagnantARetourner;
-
-    // avant de commencer : match nul
-    gagnantARetourner = 'N';
-
-    // il sera modifie dans l'un des cas suivants
-    switch (getCoupJoueur())
+    monJeu.setCoupMachine(monJeu.genererUnCoup());
+    switch (monJeu.getCoupMachine())
     {
-    case (pierre):
-        if (getCoupMachine() == papier)
-        {
-            gagnantARetourner = 'M';
-        }
-        else if (getCoupMachine() == ciseau)
-        {
-            gagnantARetourner = 'J';     
-        }
-        break;
-    
-    case (papier):
-        if (getCoupMachine() == pierre)
-        {
-            gagnantARetourner = 'J';
-        }
-        else if (getCoupMachine() == ciseau)
-        {
-            gagnantARetourner = 'M';     
-        }
+    case (monJeu.pierre):
+         ui->coupMachine->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/pierre.gif")));
         break;
 
-    case (ciseau):
-        if (getCoupMachine() == pierre)
-        {
-            gagnantARetourner = 'M';
-        }
-        else if (getCoupMachine() == papier)
-        {
-            gagnantARetourner = 'J';   
-        }  
+    case (monJeu.papier):
+        ui->coupMachine->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/papier.gif")));
+        break;
+
+    case (monJeu.ciseau):
+       ui->coupMachine->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/ciseau.gif")));
         break;
     }
-    return gagnantARetourner;
+    QString scoreMachine;
+    QString scoreJoueur;
+     monJeu.majScores(monJeu.determinerGagnant());
+     scoreJoueur.setNum(monJeu.getScoreJoueur());
+     scoreMachine.setNum(monJeu.getScoreMachine());
+     ui->scoreJoueur->setText(scoreJoueur);
+     ui->scoreMachine->setText(scoreMachine);
+     ui->scoreJoueur->setText(scoreJoueur);
+     ui->scoreMachine->setFont(QFont("Times", 15, QFont::Bold));
+     ui->scoreJoueur->setFont(QFont("Times", 15, QFont::Bold));
+     ui->scoreMachine->setAlignment(Qt::AlignCenter);
+     ui->scoreJoueur->setAlignment(Qt::AlignCenter);
+
+
 }
 
-         ///* Methodes utilitaires du Module
-
-int randMinMax(int min, int max){
-    /* pre-condition : min<max ;
-       Le nbre aleatoire est compris entre [min, max[ */
-   return rand()%(max-min) + min;
-}
-
-Chifoumi::UnCoup Chifoumi::genererUnCoup()
+void chifoumi::infosApp()
 {
-    UnCoup valeurGeneree;   // valeur a retourner
-    unsigned int nbAleatoire;
-    nbAleatoire = randMinMax(0,3);
-    switch (nbAleatoire)
-    {
-    case 1 :
-        valeurGeneree = pierre;
-        break;
-    case 2 :
-        valeurGeneree = papier;
-        break;
-    case 3 :
-        valeurGeneree = ciseau;
-        break;
-    default:
-        break;
-    }
-    return valeurGeneree;
-}
-
-        /// Setters
-
-void Chifoumi::setCoupJoueur(UnCoup p_coup) {
-    (*this).coupJoueur = p_coup;
-}
-
-void Chifoumi::setCoupMachine(UnCoup p_coup) {
-    (*this).coupMachine = p_coup;
-}
-
-void Chifoumi::setScoreJoueur(unsigned int p_score) {
-    (*this).scoreJoueur = p_score;
-}
-
-void Chifoumi::setScoreMachine(unsigned int p_score) {
-    (*this).scoreMachine = p_score;
-}
-
-void Chifoumi::majScores(char p_gagnant) {   
-    if (p_gagnant == 'J') 
-    {
-        setScoreJoueur(getScoreJoueur() + 1);
-    }
-    else if (p_gagnant == 'M')
-    {
-        setScoreMachine(getScoreMachine() + 1);
-    }
-}
-
-void Chifoumi::initScores() {
-    setScoreJoueur(0);
-    setScoreMachine(0);
-}
-
-void Chifoumi::initCoups() {
-    setCoupJoueur(rien);
-    setCoupMachine(rien);
+    QMessageBox infosApp;
+    infosApp.setWindowTitle("A propos de l'application");
+    infosApp.setInformativeText("Version 3.0\n"
+                                "Créé par Thomas Jorge, Poties Guilhem et Gomes Noah\n"
+                                "Version du 11/05/2022");
+    infosApp.setStandardButtons(QMessageBox::Ok);
+    infosApp.exec();
 }
