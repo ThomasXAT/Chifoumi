@@ -28,5 +28,7 @@ public slots:
 
 private:
     Ui::chifoumi *ui;
+    QString scoreMachine;
+    QString scoreJoueur;
 };
 #endif // CHIFOUMI_H

@@ -6,8 +6,6 @@
 
 
 ChifoumiJeu monJeu;
-QString scoreMachine;
-QString scoreJoueur;
 
 
 chifoumi::chifoumi(QWidget *parent)
@@ -46,6 +44,12 @@ void chifoumi::nouvellePartie(){
     ui->pierre->setEnabled(true);
     ui->feuille->setEnabled(true);
     ui->ciseau->setEnabled(true);
+    monJeu.initScores();
+    monJeu.initCoups();
+    scoreJoueur.setNum(monJeu.getScoreJoueur());
+    scoreMachine.setNum(monJeu.getScoreMachine());
+    ui->scoreJoueur->setText(scoreJoueur);
+    ui->scoreMachine->setText(scoreMachine);
 
 
 }
@@ -85,8 +89,6 @@ void chifoumi::coupMachine(){
        ui->coupMachine->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/ciseau.gif")));
         break;
     }
-    QString scoreMachine;
-    QString scoreJoueur;
      monJeu.majScores(monJeu.determinerGagnant());
      scoreJoueur.setNum(monJeu.getScoreJoueur());
      scoreMachine.setNum(monJeu.getScoreMachine());
@@ -106,7 +108,7 @@ void chifoumi::infosApp()
     QMessageBox infosApp;
     infosApp.setWindowTitle("A propos de l'application");
     infosApp.setInformativeText("Version 3.0\n"
-                                "Créé par Thomas Jorge, Poties Guilhem et Gomes Noah\n"
+                                "Créé par Thomas Jorge, Guilhem Poties et Noah Gomes\n"
                                 "Version du 11/05/2022");
     infosApp.setStandardButtons(QMessageBox::Ok);
     infosApp.exec();
