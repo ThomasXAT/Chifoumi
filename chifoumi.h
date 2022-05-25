@@ -30,5 +30,9 @@ private:
     Ui::chifoumi *ui;
     QString scoreMachine;
     QString scoreJoueur;
+    QString points;
+    QString gagnant;
+    QString joueur;
+    void finPartieGagnant();
 };
 #endif // CHIFOUMI_H

@@ -6,6 +6,7 @@
 
 
 ChifoumiJeu monJeu;
+unsigned int ptsPartie=5;
 
 
 chifoumi::chifoumi(QWidget *parent)
@@ -99,10 +100,45 @@ void chifoumi::coupMachine(){
      ui->scoreJoueur->setFont(QFont("Times", 15, QFont::Bold));
      ui->scoreMachine->setAlignment(Qt::AlignCenter);
      ui->scoreJoueur->setAlignment(Qt::AlignCenter);
+     if (monJeu.getScoreMachine()==ptsPartie or monJeu.getScoreJoueur()==ptsPartie)
+     {
+         ui->pierre->setEnabled(false);
+         ui->feuille->setEnabled(false);
+         ui->ciseau->setEnabled(false);
+         finPartieGagnant();
+     }
 
 
 }
 
+void chifoumi::finPartieGagnant()
+{
+    QMessageBox finPartieGagnant;
+    finPartieGagnant.setWindowTitle("Fin de Partie");
+    finPartieGagnant.setWindowIcon(QIcon(QString::fromUtf8(":/chifoumi/images (1)/images/finJeu.png")));
+
+    if(monJeu.getScoreMachine()>monJeu.getScoreJoueur()){
+        gagnant="La machine a gagné avec un score de ";
+        gagnant.append( QString::number(monJeu.getScoreMachine()));
+
+        finPartieGagnant.setInformativeText(gagnant);
+    }
+    if(monJeu.getScoreMachine()<monJeu.getScoreJoueur()){
+        gagnant="Bravo ! Vous avez gagné avec un score de ";
+        gagnant.append( QString::number(monJeu.getScoreJoueur()));
+
+        finPartieGagnant.setInformativeText(gagnant);
+    }
+    if(monJeu.getScoreMachine()==monJeu.getScoreJoueur()){
+        gagnant="EGALITE ENTRE LA MACHINE ET LE JOUEUR !! ";
+
+
+        finPartieGagnant.setInformativeText(gagnant);
+    }
+
+    finPartieGagnant.setStandardButtons(QMessageBox::Ok);
+    finPartieGagnant.exec();
+}
 void chifoumi::infosApp()
 {
     QMessageBox infosApp;
