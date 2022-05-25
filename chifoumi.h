@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class chifoumi; }
@@ -19,20 +20,25 @@ public:
 
 private slots:
     void infosApp();
+    void finPartieGagnant();
 
 public slots:
     void nouvellePartie();
+    void boutonPause();
     void coupPierre();
     void coupCiseau();
     void coupFeuille();
+    void temp();
 
 private:
     Ui::chifoumi *ui;
+    QTimer *timer;
+    int sec;
+    QString TImer;
+    bool Pause=false;
+    QString gagnant;
+    QString tempsEcoule;
     QString scoreMachine;
     QString scoreJoueur;
-    QString points;
-    QString gagnant;
-    QString joueur;
-    void finPartieGagnant();
 };
 #endif // CHIFOUMI_H

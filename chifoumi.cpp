@@ -6,7 +6,8 @@
 
 
 ChifoumiJeu monJeu;
-unsigned int ptsPartie=5;
+
+
 
 
 chifoumi::chifoumi(QWidget *parent)
@@ -18,6 +19,7 @@ chifoumi::chifoumi(QWidget *parent)
     QObject::connect(ui->pierre, SIGNAL(clicked()), this, SLOT(coupPierre()));
     QObject::connect(ui->feuille, SIGNAL(clicked()), this, SLOT(coupFeuille()));
     QObject::connect(ui->ciseau, SIGNAL(clicked()), this, SLOT(coupCiseau()));
+    QObject::connect(ui->BoutonPause, SIGNAL(clicked()), this, SLOT(boutonPause()));
     QObject::connect(ui->actionA_Propos_de_l_application, SIGNAL(triggered()), this, SLOT(infosApp()));
     new QShortcut(QKeySequence(Qt::ALT + Qt::Key_F + Qt::Key_F3), this, SLOT(close()));
     new QShortcut(QKeySequence(Qt::Key_F +Qt::Key_F1), this, SLOT(infosApp()));
@@ -31,6 +33,16 @@ chifoumi::chifoumi(QWidget *parent)
     ui->scoreJoueur->setFont(QFont("Times", 15, QFont::Bold));
     ui->scoreMachine->setAlignment(Qt::AlignCenter);
     ui->scoreJoueur->setAlignment(Qt::AlignCenter);
+    timer = new QTimer(this);
+    timer->setInterval(1000);
+    connect(timer, SIGNAL(timeout()), this, SLOT(temp()));
+
+
+
+
+
+
+
 
 
 }
@@ -45,15 +57,42 @@ void chifoumi::nouvellePartie(){
     ui->pierre->setEnabled(true);
     ui->feuille->setEnabled(true);
     ui->ciseau->setEnabled(true);
+    ui->BoutonPause->setEnabled(true);
     monJeu.initScores();
     monJeu.initCoups();
     scoreJoueur.setNum(monJeu.getScoreJoueur());
     scoreMachine.setNum(monJeu.getScoreMachine());
     ui->scoreJoueur->setText(scoreJoueur);
     ui->scoreMachine->setText(scoreMachine);
+    sec = 30;
+    timer->start();
+    temp();
+
 
 
 }
+void chifoumi::boutonPause(){
+     if (Pause==true){
+         timer->start();
+         ui->BoutonPause->setText("Pause");
+         ui->boutonPartie->setEnabled(true);
+         ui->pierre->setEnabled(true);
+         ui->feuille->setEnabled(true);
+         ui->ciseau->setEnabled(true);
+         Pause=false;
+
+     }
+
+     else {
+         timer->stop();
+         ui->boutonPartie->setEnabled(false);
+         ui->pierre->setEnabled(false);
+         ui->feuille->setEnabled(false);
+         ui->ciseau->setEnabled(false);
+         ui->BoutonPause->setText("Reprendre la Partie");
+         Pause=true;
+     }
+    }
 void chifoumi::coupPierre(){
     ui->coupJoueur->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/pierre.gif")));
     monJeu.setCoupJoueur(monJeu.pierre);
@@ -100,23 +139,25 @@ void chifoumi::coupMachine(){
      ui->scoreJoueur->setFont(QFont("Times", 15, QFont::Bold));
      ui->scoreMachine->setAlignment(Qt::AlignCenter);
      ui->scoreJoueur->setAlignment(Qt::AlignCenter);
-     if (monJeu.getScoreMachine()==ptsPartie or monJeu.getScoreJoueur()==ptsPartie)
-     {
-         ui->pierre->setEnabled(false);
-         ui->feuille->setEnabled(false);
-         ui->ciseau->setEnabled(false);
-         finPartieGagnant();
-     }
 
 
+}
+
+void chifoumi::infosApp()
+{
+    QMessageBox infosApp;
+    infosApp.setWindowTitle("A propos de l'application");
+    infosApp.setInformativeText("Version 5.0\n"
+                                "Créé par Thomas Jorge, Guilhem Poties et Noah Gomes\n"
+                                "Version du 11/05/2022");
+    infosApp.setStandardButtons(QMessageBox::Ok);
+    infosApp.exec();
 }
 
 void chifoumi::finPartieGagnant()
 {
     QMessageBox finPartieGagnant;
     finPartieGagnant.setWindowTitle("Fin de Partie");
-    finPartieGagnant.setWindowIcon(QIcon(QString::fromUtf8(":/chifoumi/images (1)/images/finJeu.png")));
-
     if(monJeu.getScoreMachine()>monJeu.getScoreJoueur()){
         gagnant="La machine a gagné avec un score de ";
         gagnant.append( QString::number(monJeu.getScoreMachine()));
@@ -139,13 +180,36 @@ void chifoumi::finPartieGagnant()
     finPartieGagnant.setStandardButtons(QMessageBox::Ok);
     finPartieGagnant.exec();
 }
-void chifoumi::infosApp()
+
+
+void chifoumi::temp()
 {
-    QMessageBox infosApp;
-    infosApp.setWindowTitle("A propos de l'application");
-    infosApp.setInformativeText("Version 3.0\n"
-                                "Créé par Thomas Jorge, Guilhem Poties et Noah Gomes\n"
-                                "Version du 11/05/2022");
-    infosApp.setStandardButtons(QMessageBox::Ok);
-    infosApp.exec();
+
+
+        if (sec==0){
+            timer->stop();
+
+            tempsEcoule="PARTIE TERMINEE";
+            ui->TIMER->setText(tempsEcoule);
+            ui->TIMER->setFont(QFont("Times", 8, QFont::Bold));
+            ui->TIMER->setAlignment(Qt::AlignCenter);
+            ui->pierre->setEnabled(false);
+            ui->feuille->setEnabled(false);
+            ui->ciseau->setEnabled(false);
+            finPartieGagnant();
+
+        }
+        else{
+            sec--;
+            tempsEcoule="";
+            tempsEcoule="TEMPS RESTANT: ";
+            tempsEcoule.append( QString::number(sec));
+            ui->TIMER->setText(tempsEcoule);
+            ui->TIMER->setFont(QFont("Times", 8, QFont::Bold));
+            ui->TIMER->setAlignment(Qt::AlignCenter);
+        }
+
+
+
+
 }
