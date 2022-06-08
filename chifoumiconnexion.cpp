@@ -72,3 +72,20 @@ bool chifoumiConnexion::connexion()
 
 
 }
+
+void chifoumiConnexion::enregistrementPartie(QString nomJoueur, unsigned int scoreJoueur, unsigned int scoreMachine, unsigned int dureePartie)
+{
+    bd = new database();
+    bool ok = bd->openDatabase();
+    qDebug()<<ok;
+    QSqlQuery query;
+
+    query.prepare("INSERT INTO partie (nomJoueur, scoreJoueur, scoreMachine, dureePartie) "
+    "VALUES (:nom, :scoreJ, :scoreM, :duree)");
+    query.bindValue(":nom", nomJoueur );
+    query.bindValue(":scoreJ", scoreJoueur);
+    query.bindValue(":scoreM", scoreMachine);
+    query.bindValue(":duree", dureePartie);
+    query.exec();
+    qDebug()<<"OPERATION D'ENREGISTREMENT REUSSI";
+}

@@ -5,10 +5,12 @@
 #include "chifoumidialog.h"
 #include "QApplication"
 #include <QDialog>
+#include "chifoumiconnexion.h"
 
 
 
 ChifoumiJeu monJeu;
+
 
 
 
@@ -203,7 +205,8 @@ void chifoumi::finPartieGagnant()
 
 void chifoumi::temp()
 {
-
+    chifoumiConnexion partie;
+    chifoumiDialog infos;
 
         if (sec==0){
             timer->stop();
@@ -216,6 +219,8 @@ void chifoumi::temp()
             ui->feuille->setEnabled(false);
             ui->ciseau->setEnabled(false);
             finPartieGagnant();
+            partie.enregistrementPartie(infos.nomJoueur(),monJeu.getScoreJoueur(),monJeu.getScoreMachine(),infos.dureePartie());
+
             ui->BoutonPause->setEnabled(false);
             ui->actionParametrer->setEnabled(true);
 

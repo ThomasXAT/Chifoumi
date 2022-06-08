@@ -23,6 +23,7 @@ private slots:
 
 public slots:
     bool connexion();
+    void enregistrementPartie(QString nomJoueur, unsigned int scoreJoueur, unsigned int scoreMachine, unsigned int dureePartie);
 
 private:
     Ui::chifoumiConnexion *ui;
