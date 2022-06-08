@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,17 +10,22 @@ CONFIG += c++11
 
 SOURCES += \
     chifoumiJeu.cpp \
+    chifoumiconnexion.cpp \
     chifoumidialog.cpp \
+    database.cpp \
     main.cpp \
     chifoumi.cpp
 
 HEADERS += \
     chifoumi.h \
     chifoumiJeu.h \
-    chifoumidialog.h
+    chifoumiconnexion.h \
+    chifoumidialog.h \
+    database.h
 
 FORMS += \
     chifoumi.ui \
+    chifoumiconnexion.ui \
     chifoumidialog.ui
 
 # Default rules for deployment.
