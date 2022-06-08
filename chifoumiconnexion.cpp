@@ -55,8 +55,8 @@ bool chifoumiConnexion::connexion()
     }
 
     if (usernameBD==username and mdpBD==mdp){
-         qDebug() << "CONNEXION REUSSIE";
-         return true;
+        qDebug() << "CONNEXION REUSSIE";
+        return true;
 
 
 
@@ -80,8 +80,8 @@ void chifoumiConnexion::enregistrementPartie(QString nomJoueur, unsigned int sco
     qDebug()<<ok;
     QSqlQuery query;
 
-    query.prepare("INSERT INTO partie (nomJoueur, scoreJoueur, scoreMachine, dureePartie) "
-    "VALUES (:nom, :scoreJ, :scoreM, :duree)");
+    query.prepare("INSERT INTO partie (NOM, ScoreJoueur, ScoreMachine, DureePartie) "
+                  "VALUES (:nom, :scoreJ, :scoreM, :duree)");
     query.bindValue(":nom", nomJoueur );
     query.bindValue(":scoreJ", scoreJoueur);
     query.bindValue(":scoreM", scoreMachine);

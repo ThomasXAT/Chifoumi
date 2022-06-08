@@ -503,6 +503,7 @@
     </property>
     <addaction name="actionQuitter"/>
     <addaction name="actionParametrer"/>
+    <addaction name="actionResultats"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -536,6 +537,11 @@
    </property>
    <property name="shortcut">
     <string>F2</string>
+   </property>
+  </action>
+  <action name="actionResultats">
+   <property name="text">
+    <string>Resultats</string>
    </property>
   </action>
  </widget>

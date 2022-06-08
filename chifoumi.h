@@ -22,11 +22,11 @@ public:
     void personnaliser();
 
 
-
 private slots:
     void infosApp();
     void finPartieGagnant();
     void afficherBoite();
+    void resultats();
 
 
 public slots:

@@ -10,7 +10,7 @@
 #include <ctime>
 
 
-    ///* ---- PARTIE MODULE ---------------------------
+///* ---- PARTIE MODULE ---------------------------
 
 ChifoumiJeu::ChifoumiJeu()
 {
@@ -25,7 +25,7 @@ ChifoumiJeu::~ChifoumiJeu()
     delete [] (this);
 }
 
-        /// Getters
+/// Getters
 
 ChifoumiJeu::UnCoup ChifoumiJeu::getCoupJoueur() {
     return (*this).coupJoueur;
@@ -89,12 +89,12 @@ char ChifoumiJeu::determinerGagnant()
     return gagnantARetourner;
 }
 
-         ///* Methodes utilitaires du Module
+///* Methodes utilitaires du Module
 
 int randMinMax(int min, int max){
     /* pre-condition : min<max ;
        Le nbre aleatoire est compris entre [min, max[ */
-   return rand()%(max-min) + min;
+    return rand()%(max-min) + min;
 }
 
 ChifoumiJeu::UnCoup ChifoumiJeu::genererUnCoup()
@@ -119,7 +119,7 @@ ChifoumiJeu::UnCoup ChifoumiJeu::genererUnCoup()
     return valeurGeneree;
 }
 
-        /// Setters
+/// Setters
 
 void ChifoumiJeu::setCoupJoueur(UnCoup p_coup) {
     (*this).coupJoueur = p_coup;

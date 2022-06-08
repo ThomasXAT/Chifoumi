@@ -2,6 +2,7 @@
 #include "chifoumidialog.h"
 #include "chifoumiconnexion.h"
 #include <QApplication>
+#include "afficherresultats.h"
 
 
 int main(int argc, char *argv[])
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
         }
 
     }
+
 
 
 

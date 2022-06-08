@@ -39,7 +39,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="titre">
          <property name="text">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;IDENTIFIEZ-VOUS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
@@ -64,7 +64,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout">
          <item row="1" column="1">
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="utilisateurLabel">
            <property name="text">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Utilisateur&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
@@ -84,7 +84,7 @@
           </spacer>
          </item>
          <item row="3" column="1">
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="motdepasseLabel">
            <property name="text">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Mot de passe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
