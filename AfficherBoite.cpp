@@ -6,10 +6,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    chifoumi w;
-    w.setWindowTitle("Chifoumi");
-    w.setWindowIcon(QIcon(QString::fromUtf8(":/chifoumi/images (1)/images/versus.gif")));
-    w.show();
+    chifoumiDialog window;
+
+    window.show();
 
     return a.exec();
 }

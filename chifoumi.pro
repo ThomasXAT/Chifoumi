@@ -10,15 +10,18 @@ CONFIG += c++11
 
 SOURCES += \
     chifoumiJeu.cpp \
+    chifoumidialog.cpp \
     main.cpp \
     chifoumi.cpp
 
 HEADERS += \
     chifoumi.h \
-    chifoumiJeu.h
+    chifoumiJeu.h \
+    chifoumidialog.h
 
 FORMS += \
-    chifoumi.ui
+    chifoumi.ui \
+    chifoumidialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

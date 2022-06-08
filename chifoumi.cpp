@@ -2,11 +2,12 @@
 #include "chifoumiJeu.h"
 #include "ui_chifoumi.h"
 #include "QShortcut"
+#include "chifoumidialog.h"
+#include "QApplication"
 
 
 
 ChifoumiJeu monJeu;
-
 
 
 
@@ -21,6 +22,7 @@ chifoumi::chifoumi(QWidget *parent)
     QObject::connect(ui->ciseau, SIGNAL(clicked()), this, SLOT(coupCiseau()));
     QObject::connect(ui->BoutonPause, SIGNAL(clicked()), this, SLOT(boutonPause()));
     QObject::connect(ui->actionA_Propos_de_l_application, SIGNAL(triggered()), this, SLOT(infosApp()));
+    QObject::connect(ui->actionParametrer, SIGNAL(triggered()), this, SLOT(afficherBoite()));
     new QShortcut(QKeySequence(Qt::ALT + Qt::Key_F + Qt::Key_F3), this, SLOT(close()));
     new QShortcut(QKeySequence(Qt::Key_F +Qt::Key_F1), this, SLOT(infosApp()));
     monJeu.initCoups();
@@ -47,6 +49,7 @@ chifoumi::chifoumi(QWidget *parent)
 
 }
 
+
 chifoumi::~chifoumi()
 {
     delete ui;
@@ -64,9 +67,12 @@ void chifoumi::nouvellePartie(){
     scoreMachine.setNum(monJeu.getScoreMachine());
     ui->scoreJoueur->setText(scoreJoueur);
     ui->scoreMachine->setText(scoreMachine);
-    sec = 30;
+    personnaliser();
     timer->start();
     temp();
+    ui->actionParametrer->setEnabled(false);
+
+
 
 
 
@@ -74,8 +80,8 @@ void chifoumi::nouvellePartie(){
 void chifoumi::boutonPause(){
      if (Pause==true){
          timer->start();
-         ui->BoutonPause->setText("Pause");
          ui->boutonPartie->setEnabled(true);
+         ui->BoutonPause->setText("Pause");
          ui->pierre->setEnabled(true);
          ui->feuille->setEnabled(true);
          ui->ciseau->setEnabled(true);
@@ -114,6 +120,8 @@ void chifoumi::coupFeuille(){
 
 void chifoumi::coupMachine(){
 
+
+
     monJeu.setCoupMachine(monJeu.genererUnCoup());
     switch (monJeu.getCoupMachine())
     {
@@ -129,6 +137,8 @@ void chifoumi::coupMachine(){
        ui->coupMachine->setPixmap(QPixmap(QString::fromUtf8(":/chifoumi/images (1)/images/ciseau.gif")));
         break;
     }
+    QString scoreMachine;
+    QString scoreJoueur;
      monJeu.majScores(monJeu.determinerGagnant());
      scoreJoueur.setNum(monJeu.getScoreJoueur());
      scoreMachine.setNum(monJeu.getScoreMachine());
@@ -139,7 +149,13 @@ void chifoumi::coupMachine(){
      ui->scoreJoueur->setFont(QFont("Times", 15, QFont::Bold));
      ui->scoreMachine->setAlignment(Qt::AlignCenter);
      ui->scoreJoueur->setAlignment(Qt::AlignCenter);
-
+     if (monJeu.getScoreMachine()==ptsPartie or monJeu.getScoreJoueur()==ptsPartie)
+     {
+         ui->pierre->setEnabled(false);
+         ui->feuille->setEnabled(false);
+         ui->ciseau->setEnabled(false);
+         sec=0;
+     }
 
 }
 
@@ -147,17 +163,19 @@ void chifoumi::infosApp()
 {
     QMessageBox infosApp;
     infosApp.setWindowTitle("A propos de l'application");
-    infosApp.setInformativeText("Version 5.0\n"
+    infosApp.setWindowIcon(QIcon(QString::fromUtf8(":/chifoumi/images (1)/images/information.png")));
+    infosApp.setInformativeText("Version 6.0\n"
                                 "Créé par Thomas Jorge, Guilhem Poties et Noah Gomes\n"
-                                "Version du 11/05/2022");
+                                "Version du 20/05/2022");
     infosApp.setStandardButtons(QMessageBox::Ok);
     infosApp.exec();
 }
-
 void chifoumi::finPartieGagnant()
 {
     QMessageBox finPartieGagnant;
     finPartieGagnant.setWindowTitle("Fin de Partie");
+    finPartieGagnant.setWindowIcon(QIcon(QString::fromUtf8(":/chifoumi/images (1)/images/finJeu.png")));
+
     if(monJeu.getScoreMachine()>monJeu.getScoreJoueur()){
         gagnant="La machine a gagné avec un score de ";
         gagnant.append( QString::number(monJeu.getScoreMachine()));
@@ -197,6 +215,8 @@ void chifoumi::temp()
             ui->feuille->setEnabled(false);
             ui->ciseau->setEnabled(false);
             finPartieGagnant();
+            ui->BoutonPause->setEnabled(false);
+            ui->actionParametrer->setEnabled(true);
 
         }
         else{
@@ -209,6 +229,86 @@ void chifoumi::temp()
             ui->TIMER->setAlignment(Qt::AlignCenter);
         }
 
+
+
+
+}
+
+void chifoumi::afficherBoite(){
+
+        chifoumiDialog window;
+        window.setWindowTitle("Paramètres");
+        window.setWindowIcon(QIcon(QString::fromUtf8(":/chifoumi/images (1)/images/parametre.png")));
+
+
+
+
+        window.show();
+        window.exec();
+
+
+
+
+
+
+}
+void chifoumi::personnaliser(){
+    chifoumiDialog duree;
+    if (duree.dureePartie()!=0){
+        sec = duree.dureePartie();
+        if (duree.nomJoueur()!="")
+        {
+            joueur=duree.nomJoueur();
+            ui->nomJoueur->setText(joueur);
+            ui->nomJoueur->setFont(QFont("Times", 12, QFont::Bold));
+            ui->nomJoueur->setAlignment(Qt::AlignCenter);
+        }
+        if (duree.pointsMax()!=0){
+            ptsPartie=duree.pointsMax();
+            points="";
+            points.append( QString::number(duree.pointsMax()));
+            points.append(" POINTS");
+            ui->pointsPartie->setText(points);
+            ui->pointsPartie->setFont(QFont("Times", 10, QFont::Bold));
+            ui->pointsPartie->setAlignment(Qt::AlignCenter);
+        }
+        else{
+            ptsPartie=5;
+            points="5 POINTS";
+            ui->pointsPartie->setText(points);
+            ui->pointsPartie->setFont(QFont("Times", 10, QFont::Bold));
+            ui->pointsPartie->setAlignment(Qt::AlignCenter);
+        }
+
+    }
+    else{
+      sec = 30;
+      if (duree.nomJoueur()!="")
+      {
+          joueur=duree.nomJoueur();
+          ui->nomJoueur->setText(joueur);
+          ui->nomJoueur->setFont(QFont("Times", 12, QFont::Bold));
+          ui->nomJoueur->setAlignment(Qt::AlignCenter);
+      }
+      if (duree.pointsMax()!=0){
+          ptsPartie=duree.pointsMax();
+          points="";
+          points.append( QString::number(duree.pointsMax()));
+          points.append(" POINTS");
+          ui->pointsPartie->setText(points);
+          ui->pointsPartie->setFont(QFont("Times", 10, QFont::Bold));
+          ui->pointsPartie->setAlignment(Qt::AlignCenter);
+      }
+      else{
+          ptsPartie=5;
+          points="5 POINTS";
+          ui->pointsPartie->setText(points);
+          ui->pointsPartie->setFont(QFont("Times", 10, QFont::Bold));
+          ui->pointsPartie->setAlignment(Qt::AlignCenter);
+      }
+
+
+    }
 
 
 
