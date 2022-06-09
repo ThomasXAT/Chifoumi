@@ -6,6 +6,7 @@ afficherResultat::afficherResultat(QWidget *parent) :
     ui(new Ui::afficherResultat)
 {
     ui->setupUi(this);
+    QObject::connect(ui->effacer, SIGNAL(clicked()), this, SLOT(effacer()));
 }
 
 afficherResultat::~afficherResultat()
@@ -30,4 +31,9 @@ void afficherResultat::resultats()
 
 
 
+}
+void afficherResultat::effacer(){
+    QSqlQuery query;
+    query.exec("DELETE FROM partie");
+    resultats();
 }

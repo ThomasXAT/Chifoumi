@@ -19,6 +19,8 @@ public:
     explicit afficherResultat(QWidget *parent = nullptr);
     ~afficherResultat();
     void resultats();
+public slots:
+        void effacer();
 
 private:
     Ui::afficherResultat *ui;

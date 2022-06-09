@@ -533,7 +533,7 @@
   </action>
   <action name="actionParametrer">
    <property name="text">
-    <string>Parametrer</string>
+    <string>Parametres</string>
    </property>
    <property name="shortcut">
     <string>F2</string>

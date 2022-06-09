@@ -170,9 +170,9 @@ void chifoumi::infosApp()
     QMessageBox infosApp;
     infosApp.setWindowTitle("A propos de l'application");
     infosApp.setWindowIcon(QIcon(QString::fromUtf8(":/chifoumi/images (1)/images/information.png")));
-    infosApp.setInformativeText("Version 9.0\n"
+    infosApp.setInformativeText("Version 10.0\n"
                                 "Créé par Thomas Jorge, Guilhem Poties et Noah Gomes\n"
-                                "Version du 02/06/2022");
+                                "Version du 08/06/2022");
     infosApp.setStandardButtons(QMessageBox::Ok);
     infosApp.exec();
 }
